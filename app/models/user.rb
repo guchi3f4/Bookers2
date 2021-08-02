@@ -5,5 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :books, dependent: :destroy
   attachment :profile_image
-  validates:name,presence:true
+  validates:name,presence:{ message: "is too short (minimum is 2 characters)" }
 end

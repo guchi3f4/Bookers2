@@ -1,3 +1,5 @@
+<p id = "notice"><%= flash[:notice] %></p>
+
 <%= render partial: "shared/side", locals: { user:@user, book:@book } %>
 
 <h2>Book detail</h2>
@@ -10,4 +12,6 @@
     <%= @user_book.title %>
   <% end %>
   <%= @user_book.body %>
+  <%= link_to "Edit", edit_book_path(@user_book) %>
+  <%= link_to "Destroy", book_path(@user_book), method: :delete, "data-confirm" => "本当に消しますか？" %>
 </div>
