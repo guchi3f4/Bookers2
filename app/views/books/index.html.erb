@@ -1,0 +1,20 @@
+<% if @book.errors.any? %>
+  <h3><%= @book.errors.count %> prohibited this obj from being saved:</h3>
+  <ul>
+    <% @book.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render partial: "shared/side", locals: { user:@user, book:@book } %>
+
+<h2>Books</h2>
+<% @books.each do |book| %>
+<div>
+  <%= attachment_image_tag book.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg" %>
+  <%= book.title %>
+  <%= book.body %>
+  <%= link_to "Show", book_path(book) %>
+</div>
+<% end %>

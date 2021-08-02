@@ -1,0 +1,13 @@
+<%= render partial: "shared/side", locals: { user:@user, book:@book } %>
+
+<h2>Book detail</h2>
+<div>
+  <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg" %>
+  <%= link_to user_path(@user) do %>
+    <%= @user.name %>
+  <% end %>
+  <%= link_to book_path(@user_book) do %>
+    <%= @user_book.title %>
+  <% end %>
+  <%= @user_book.body %>
+</div>

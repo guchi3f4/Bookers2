@@ -9,6 +9,15 @@
   </head>
 
   <body>
+    <header>
+      <p>Bookers2</p>
+      <%= link_to "logout", destroy_user_session_path, method: :delete %>
+    </header>
+    <main>
     <%= yield %>
+    </main>
+    <footer>
+      <p>CopyRight Infratop.inc</p>
+    </footer>
   </body>
 </html>
