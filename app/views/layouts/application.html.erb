@@ -23,6 +23,9 @@
         <li><%= link_to "login", new_user_session_path %></li>
       <% end %>
     </header>
+
+    <%= render 'layouts/notification' %>
+
     <main>
     <%= yield %>
     </main>
