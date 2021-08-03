@@ -1,17 +1,40 @@
-<%= render partial: "shared/side", locals: { user:@user, book:@book } %>
+<div class="container px-md-0">
+  <div class="row">
+    <div class="col-3">
+      <%= render partial: "shared/side", locals: { user:@user, book:@book } %>
+    </div>
+    <div class="col-8 offset-1">
+      <h2>Book detail</h2>
+      <div>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg" %><br>
+                <%= link_to user_path(@user) do %>
+                  <%= @user.name %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to book_path(@user_book) do %>
+                  <%= @user_book.title %>
+                <% end %>
+              </td>
+              <td><%= @user_book.body %></td>
 
-<h2>Book detail</h2>
-<div>
-  <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg" %>
-  <%= link_to user_path(@user) do %>
-    <%= @user.name %>
-  <% end %>
-  <%= link_to book_path(@user_book) do %>
-    <%= @user_book.title %>
-  <% end %>
-  <%= @user_book.body %>
-  <% if @user == current_user %>
-    <%= link_to "Edit", edit_book_path(@user_book) %>
-    <%= link_to "Destroy", book_path(@user_book), method: :delete, "data-confirm" => "本当に消しますか？" %>
-  <% end %>
+              <% if @user == current_user %>
+              <td>
+                <%= link_to "Edit", edit_book_path(@user_book), class:"btn btn-success btn-sm" %>
+              </td>
+              <td>
+                <%= link_to "Destroy", book_path(@user_book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
+              </td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
 </div>

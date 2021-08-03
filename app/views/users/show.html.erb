@@ -1,12 +1,32 @@
-<%= render partial: "shared/side", locals: { user:@user, book:@book } %>
-
-<h2>Books</h2>
-<% @user_book.each do |book| %>
-<div>
-  <%= attachment_image_tag book.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg" %>
-  <%= link_to book_path(book) do %>
-    <%= book.title %>
-  <% end %>
-  <%= book.body %>
+<div class="container px-md-0">
+  <div class="row">
+    <div class="col-3">
+      <%= render partial: "shared/side", locals: { user:@user, book:@book } %>
+    </div>
+    <div class="col-8 offset-1">
+      <h2>Books</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Opinion</th>
+          </tr>
+        </thead>
+        <% @user_book.each do |book| %>
+        <tbody>
+          <tr>
+            <td><%= attachment_image_tag book.user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg" %></td>
+            <td>
+              <%= link_to book_path(book) do %>
+                <%= book.title %>
+              <% end %>
+              </td>
+            <td><%= book.body %></td>
+          </tr>
+        </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
 </div>
-<% end %>
