@@ -32,10 +32,48 @@
                 <%= link_to "Destroy", book_path(@user_book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
               </td>
               <% end %>
+              <% if @user_book.favorited_by?(current_user) %>
+              <td>
+                <%= link_to book_favorites_path(@user_book, link: 1), method: :delete do %>
+                ♥<%= @user_book.favorites.count %>
+                <% end %>
+              </td>
+              <% else %>
+              <td>
+                <%= link_to book_favorites_path(@user_book, link: 1), method: :post do %>
+                ♥<%= @user_book.favorites.count %>
+                <% end %>
+              </td>
+              <% end %>
+              <td>
+                コメントの数: <%= @user_book.post_comments.count %>
+              </td>
             </tr>
           </tbody>
         </table>
 
+        <% @user_book.post_comments.each do |post_comment| %>
+        <div>
+          <%= link_to user_path(post_comment.user) do %>
+            <%= attachment_image_tag post_comment.user, :profile_image, :fill, 50, 50, fallback: "no_image.jpg" %>
+          <% end %>
+          <span class="align-bottom"><%= post_comment.user.name %></span>
+          <% if post_comment.user == current_user %>
+            <%= link_to "Destroy", book_post_comment_path(post_comment.book_id, post_comment), method: :delete, class: "btn btn-danger btn-sm align-bottom" %>
+          <% end %>
+        <div>
+        <div>
+          <%= post_comment.comment%>
+        </div>
+        <% end %>
+        <%= form_with model: [@user_book, @post_comment], local:true do |f| %>
+          <div class="form-group">
+            <%= f.text_area :comment, class: "form-control", rows: "5" %>
+          </div>
+          <div class="form-group">
+            <%= f.submit "送信" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
