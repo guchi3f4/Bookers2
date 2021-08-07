@@ -11,6 +11,7 @@
             <th></th>
             <th>Title</th>
             <th>Opinion</th>
+            <th></th>
           </tr>
         </thead>
         <% @user_book.each do |book| %>
@@ -27,6 +28,9 @@
               <% end %>
               </td>
             <td><%= book.body %></td>
+            <td>
+              コメント数: <%= book.post_comments.count %>
+            </td>
           </tr>
         </tbody>
         <% end %>

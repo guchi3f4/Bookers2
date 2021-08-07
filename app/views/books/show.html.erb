@@ -66,6 +66,16 @@
           <%= post_comment.comment%>
         </div>
         <% end %>
+        
+        <% if @post_comment.errors.any? %>
+        <h3 class="text-danger"><%= pluralize(@post_comment.errors.count, "error") %> prohibited this obj from being saved:</h3>
+        <ul>
+          <% @post_comment.errors.full_messages.each do |message| %>
+            <li class="text-danger"><%= message %></li>
+          <% end %>
+        </ul>
+        <% end %>
+        
         <%= form_with model: [@user_book, @post_comment], local:true do |f| %>
           <div class="form-group">
             <%= f.text_area :comment, class: "form-control", rows: "5" %>
