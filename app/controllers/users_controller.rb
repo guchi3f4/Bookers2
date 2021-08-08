@@ -25,6 +25,17 @@ class UsersController < ApplicationController
       @books = @user.books
     end
 
+    def following
+      @users  = User.find(params[:id]).following
+      redirect_to following_user_path(params[:id])
+    end
+
+    def followers
+      @user  = User.find(params[:id])
+      @users = @user.followers
+      redirect_to followers_user_path(params[:id])
+    end
+
     private
 
     def params_user
