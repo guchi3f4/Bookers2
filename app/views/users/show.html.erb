@@ -1,7 +1,7 @@
 <div class="container px-0">
   <div class="row">
     <div class="col-md-3">
-      <%= render partial: "shared/side", locals: { user: @user, book: @book } %>
+      <%= render "shared/side", user:@user, book:Book.new %>
     </div>
     <div class="col-md-8 offset-md-1">
       <h2>Books</h2>
@@ -14,7 +14,7 @@
             <th></th>
           </tr>
         </thead>
-        <% @user_book.each do |book| %>
+        <% @books.each do |book| %>
         <tbody>
           <tr>
             <td>

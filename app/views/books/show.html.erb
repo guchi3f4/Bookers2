@@ -1,7 +1,7 @@
 <div class="container px-0">
   <div class="row">
     <div class="col-md-3">
-      <%= render partial: "shared/side", locals: { user: @user, book: @book } %>
+      <%= render "shared/side", user:@book.user, book:Book.new %>
     </div>
     <div class="col-md-8 offset-md-1">
       <h2>Book detail</h2>
@@ -10,49 +10,49 @@
           <tbody>
             <tr>
               <td>
-                <%= link_to user_path(@user) do %>
-                  <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg" %>
+                <%= link_to user_path(@book.user) do %>
+                  <%= attachment_image_tag @book.user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg" %>
                 <% end %><br>
-                <%= link_to user_path(@user) do %>
-                  <%= @user.name %>
+                <%= link_to user_path(@book.user) do %>
+                  <%= @book.user.name %>
                 <% end %>
               </td>
               <td>
-                <%= link_to book_path(@user_book) do %>
-                  <%= @user_book.title %>
+                <%= link_to book_path(@book) do %>
+                  <%= @book.title %>
                 <% end %>
               </td>
-              <td><%= @user_book.body %></td>
+              <td><%= @book.body %></td>
 
-              <% if @user == current_user %>
+              <% if @book.user == current_user %>
               <td>
-                <%= link_to "Edit", edit_book_path(@user_book), class:"btn btn-success btn-sm" %>
+                <%= link_to "Edit", edit_book_path(@ook), class:"btn btn-success btn-sm" %>
               </td>
               <td>
-                <%= link_to "Destroy", book_path(@user_book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
+                <%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
               </td>
               <% end %>
-              <% if @user_book.favorited_by?(current_user) %>
+              <% if @book.favorited_by?(current_user) %>
               <td>
-                <%= link_to book_favorites_path(@user_book, link: 1), method: :delete do %>
-                ♥<%= @user_book.favorites.count %>
+                <%= link_to book_favorites_path(@book, link: 1), method: :delete do %>
+                ♥<%= @book.favorites.count %>
                 <% end %>
               </td>
               <% else %>
               <td>
-                <%= link_to book_favorites_path(@user_book, link: 1), method: :post do %>
-                ♥<%= @user_book.favorites.count %>
+                <%= link_to book_favorites_path(@book, link: 1), method: :post do %>
+                ♥<%= @book.favorites.count %>
                 <% end %>
               </td>
               <% end %>
               <td>
-                コメントの数: <%= @user_book.post_comments.count %>
+                コメントの数: <%= @book.post_comments.count %>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <% @user_book.post_comments.each do |post_comment| %>
+        <% @book.post_comments.each do |post_comment| %>
         <div>
           <%= link_to user_path(post_comment.user) do %>
             <%= attachment_image_tag post_comment.user, :profile_image, :fill, 50, 50, fallback: "no_image.jpg" %>
@@ -66,7 +66,7 @@
           <%= post_comment.comment%>
         </div>
         <% end %>
-        
+
         <% if @post_comment.errors.any? %>
         <h3 class="text-danger"><%= pluralize(@post_comment.errors.count, "error") %> prohibited this obj from being saved:</h3>
         <ul>
@@ -75,8 +75,8 @@
           <% end %>
         </ul>
         <% end %>
-        
-        <%= form_with model: [@user_book, @post_comment], local:true do |f| %>
+
+        <%= form_with model: [@book, @post_comment], local:true do |f| %>
           <div class="form-group">
             <%= f.text_area :comment, class: "form-control", rows: "5" %>
           </div>
