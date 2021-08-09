@@ -21,6 +21,8 @@ class User < ApplicationRecord
     following.include?(user)
   end
 
+  
+
   attachment :profile_image
   validates:name,
     uniqueness: true,
