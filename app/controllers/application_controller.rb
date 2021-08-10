@@ -16,4 +16,7 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:email])
   end
+
+  #form_withの設定:初期状態でremote
+  Rails.application.config.action_view.form_with_generates_remote_forms = true
 end
