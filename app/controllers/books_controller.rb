@@ -30,7 +30,7 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.joins(:favorites).where(favorites: { created_at: Time.current.all_week }).group(:id).order('count(book_id) desc')
+    @books = Book.joins(:favorites).where(favorites: { created_at: Time.current.all_week}).group(:id).order('count(book_id) desc')
     #@books = Book.find(Favorite.group(:book_id).where( created_at: Time.current.all_week ).order('count(book_id) desc').pluck(:book_id))
   end
 

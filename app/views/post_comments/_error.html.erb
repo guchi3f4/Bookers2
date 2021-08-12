@@ -1,7 +1,7 @@
-<% if post_comment.errors.any? %>
-  <h3 class="text-danger"><%= pluralize(@post_comment.errors.count, "error") %> prohibited this obj from being saved:</h3>
+<% if obj.errors.any? %>
+  <h3 class="text-danger"><%= pluralize(obj.errors.count, "error") %> prohibited this obj from being saved:</h3>
   <ul>
-    <% @post_comment.errors.full_messages.each do |message| %>
+    <% obj.errors.full_messages.each do |message| %>
       <li class="text-danger"><%= message %></li>
     <% end %>
   </ul>

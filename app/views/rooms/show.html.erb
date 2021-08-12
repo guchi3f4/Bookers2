@@ -1,27 +1,25 @@
-<h1>さんとのチャット</h1>
+<h1>
+  <% @anotherEntry.each do |e| %>
+    <%= e.user.name %>さんとのチャット
+  <% end %>
+</h1>
 
-<% @anotherEntries.each do |e| %>
-  <%= e.user.name %>さん
-<% end %>
-<hr>
-<div class="chats">
-  <div class="chat">
-    <% if @messages.present? %>
-      <% @messages.each do |m| %>
-        <div class="chat-box">
-
-          <div class="chat-hukidashi"> <strong><%= m.content %></strong> <br>
-            <%= m.created_at.strftime("%Y-%m-%d %H:%M")%>
-          </div>
-        </div>
-      <% end %>
+<div class="container">
+  <div class"row">
+    <% @messages.each do |m| %>
+      <div class="col-md-6 offset-md-3">
+        <%= m.message %>
+      </div>
     <% end %>
   </div>
-  <div class="posts">
-    <%= form_for @message do |f| %>
-      <%= f.text_field :message, placeholder: "メッセージを入力して下さい" , size: 70, class:"form-text-field" %>
-        <%= f.hidden_field :room_id, value: @room.id %>
-          <%= f.submit "投稿",class: 'form-submit'%>
-    <% end %>
-  </div>
+</div>
+
+<%= render "post_comments/error", obj:@message %>
+
+<div>
+  <%= form_with model: @message, rocal:true do |f| %>
+    <%= f.text_field :message %>
+    <%= f.hidden_field :room_id, value: @room.id %>
+    <%= f.submit "投稿"%>
+  <% end %>
 </div>
