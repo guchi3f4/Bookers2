@@ -30,8 +30,11 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.joins(:favorites).where(favorites: { created_at: Time.current.all_week}).group(:id).order('count(book_id) desc')
-    #@books = Book.find(Favorite.group(:book_id).where( created_at: Time.current.all_week ).order('count(book_id) desc').pluck(:book_id))
+    @books = Book.all.sort{|a,b|
+      b.favorites.where(created_at: set_week).size <=>
+      a.favorites.where(created_at: set_week).size
+    }
+
   end
 
   def show
@@ -66,5 +69,9 @@ class BooksController < ApplicationController
 
   def params_book
     params.require(:book).permit(:title, :body)
+  end
+
+  def set_week
+    Time.current.ago(7.days)..Time.current
   end
 end
