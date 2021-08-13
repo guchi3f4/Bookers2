@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
-  
+
   has_many :entries, dependent: :destroy
   has_many :messages, dependent: :destroy
 
@@ -24,7 +24,19 @@ class User < ApplicationRecord
     following.include?(user)
   end
 
+  def ratio(after,before)
+    if after == 0 || before == 0
+      0
+    else
+    (after / before.to_f * 100).round
+    end
+  end
   
+  def week_date(num)
+    books.where(created_at: Date.today.ago(num.days).all_day).count
+  end
+
+
 
   attachment :profile_image
   validates:name,

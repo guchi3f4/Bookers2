@@ -35,6 +35,46 @@
         </tbody>
         <% end %>
       </table>
+
+      <h3>投稿数の前日比・前週比</h3>
+      <table class="table table-bordered">
+        <tr>
+          <th>今日の投稿数</th>
+          <th>前日の投稿数</th>
+          <th>前日比</th>
+        </tr>
+        <tr>
+          <td><%= @today_book %></td>
+          <td><%= @yesterday_book %></td>
+          <td><%= @user.ratio(@today_book,@yesterday_book) %>%</td>
+        </tr>
+      </table>
+      <table class="table table-bordered">
+        <tr>
+          <th>今週の投稿数</th>
+          <th>前週の投稿数</th>
+          <th>前週比</th>
+        </tr>
+        <tr>
+          <td><%= @this_week %></td>
+          <td><%= @last_week %></td>
+          <td><%= @user.ratio(@this_week,@last_week) %>%</td>
+        </tr>
+      </table>
+      <table class="table table-bordered">
+        <tr>
+          <th>6日前</th><th>5日前</th><th>4日前</th><th>3日前</th><th>2日前</th><th>1日前</th><th>今日</th>
+        </tr>
+        <tr>
+          <td><%= @user.week_date(6) %></td>
+          <td><%= @user.week_date(5) %></td>
+          <td><%= @user.week_date(4) %></td>
+          <td><%= @user.week_date(3) %></td>
+          <td><%= @user.week_date(2) %></td>
+          <td><%= @user.week_date(1) %></td>
+          <td><%= @user.week_date(0) %></td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

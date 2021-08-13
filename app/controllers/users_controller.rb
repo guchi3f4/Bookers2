@@ -23,6 +23,10 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @books = @user.books
+    @today_book = @books.where(created_at: Time.zone.now.all_day).count
+    @yesterday_book = @books.where(created_at: 1.day.ago.all_day).count
+    @this_week = @books.where(created_at: Date.today.ago(6.days)..Time.current).count
+    @last_week = @books.where(created_at: Date.today.ago(13.days)..Date.today.ago(6.days)).count
 
     @userEntry = Entry.where(user_id: @user.id)
     @currentUserEntry = Entry.where(user_id: current_user.id)
@@ -56,4 +60,9 @@ class UsersController < ApplicationController
   def params_user
     params.require(:user).permit(:name, :profile_image, :introduction)
   end
+
+  def set_week
+    Time.current.ago(7.days)..Time.current
+  end
+
 end

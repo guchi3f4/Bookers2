@@ -34,7 +34,6 @@ class BooksController < ApplicationController
       b.favorites.where(created_at: set_week).size <=>
       a.favorites.where(created_at: set_week).size
     }
-
   end
 
   def show
