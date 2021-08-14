@@ -26,12 +26,12 @@ class User < ApplicationRecord
 
   def ratio(after,before)
     if after == 0 || before == 0
-      0
+      "0%"
     else
-    (after / before.to_f * 100).round
+    (after / before.to_f * 100).round.to_s + "%"
     end
   end
-  
+
   def week_date(num)
     books.where(created_at: Date.today.ago(num.days).all_day).count
   end
