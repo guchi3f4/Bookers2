@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :books, dependent: :destroy
   has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
+
   has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
   has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :following, through: :active_relationships, source: :followed
@@ -13,6 +14,16 @@ class User < ApplicationRecord
 
   has_many :entries, dependent: :destroy
   has_many :messages, dependent: :destroy
+
+  has_many :group_users, dependent: :destroy
+
+  attachment :profile_image
+
+  validates:name,
+    uniqueness: true,
+    length: { in: 2..20 }
+  validates:introduction,
+    length: { maximum: 50 }
 
   def follow(user_id)
     active_relationships.create(followed_id: user_id)
@@ -35,13 +46,4 @@ class User < ApplicationRecord
   def week_date(num)
     books.where(created_at: Date.today.ago(num.days).all_day).count
   end
-
-
-
-  attachment :profile_image
-  validates:name,
-    uniqueness: true,
-    length: { in: 2..20 }
-  validates:introduction,
-    length: { maximum: 50 }
 end

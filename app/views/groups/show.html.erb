@@ -1,0 +1,40 @@
+<div class="container px-md-0">
+  <div class="row">
+    <div class="col-md-3">
+      <%= render "shared/side", user:current_user, book:Book.new %>
+    </div>
+    <div class="col-md-8 offset-md-1">
+      <h2>Group Detail</h2>
+      <table class="table">
+        <tr>
+         <th></th>
+         <th>グループ名</th>
+         <th>紹介文</th>
+         <th>メンバー</th>
+         <th></th>
+        </tr>
+        <tr>
+          <td><%= attachment_image_tag @group, :image, :fill, 50, 50, fallback: "no_image.jpg", size: "50x50" %></td>
+          <td>
+            <%= @group.name %>
+          </td>
+          <td><%= @group.introduction %></td>
+          <td>
+            <% @group_users.each do |group_user| %>
+              <%= group_user.user.name %><br>
+            <% end %>
+          </td>
+          <% if current_user.id == @group.owner_id %>
+            <td><%= link_to "Edit", edit_group_path(@group.id), class:"btn btn-success" %></td>
+          <% else %>
+            <% if @group.group_users?(current_user) %>
+              <td><%= link_to "Leave this group", group_group_users_path(@group), method: :delete, class:"btn btn-danger" %></td>
+            <% else %>
+              <td><%= link_to "Join this group", group_group_users_path(@group), method: :post, class:"btn btn-success" %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

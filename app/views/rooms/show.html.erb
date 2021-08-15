@@ -3,7 +3,6 @@
     <%= e.user.name %>さんとのチャット
   <% end %>
 </h1>
-
 <div class="container">
   <div class"row">
     <% @messages.each do |m| %>
@@ -19,7 +18,6 @@
 <div>
   <%= form_with model: @message, rocal:true do |f| %>
     <%= f.text_field :message %>
-    <%= f.hidden_field :room_id, value: @room.id %>
     <%= f.hidden_field :room_id, value: @room.id %>
     <%= f.submit "投稿"%>
   <% end %>
