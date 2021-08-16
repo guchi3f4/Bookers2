@@ -67,7 +67,7 @@ class BooksController < ApplicationController
   private
 
   def params_book
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :evaluation)
   end
 
   def set_week

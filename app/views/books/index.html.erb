@@ -27,6 +27,7 @@
             <th>Opinion</th>
             <th></th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <% @books.each do |book| %>
@@ -49,6 +50,20 @@
             <td>
               コメント数: <%= book.post_comments.count %>
             </td>
+
+            <td id="star-evaluation-<%= book.id %>"></td>
+　　　　　　<script>
+            $('#star-evaluation-<%= book.id %>').raty({
+              size     : 36,
+              starOff:  '<%= asset_path('star-off.png') %>',
+              starOn : '<%= asset_path('star-on.png') %>',
+              starHalf: '<%= asset_path('star-half.png') %>',
+              half: true,
+              readOnly: true,
+              score: <%= book.evaluation %>
+            });
+            </script>
+
           </tr>
         </tbody>
         <% end %>

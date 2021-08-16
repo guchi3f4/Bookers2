@@ -24,15 +24,6 @@
               </td>
               <td><%= @book.body %></td>
 
-              <% if @book.user == current_user %>
-              <td>
-                <%= link_to "Edit", edit_book_path(@book), class:"btn btn-success btn-sm" %>
-              </td>
-              <td>
-                <%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
-              </td>
-              <% end %>
-
               <td class="favorite-btn<%= @book.id %>">
                 <%= render "favorites/favorite", book:@book %>
               </td>
@@ -40,6 +31,28 @@
               <td>
                 コメントの数: <%= @book.post_comments.count %>
               </td>
+
+              <td id="star-evaluation-<%= @book.id %>"></td>
+　　　　　　　<script>
+                $('#star-evaluation-<%= @book.id %>').raty({
+                  size     : 36,
+                  starOff:  '<%= asset_path('star-off.png') %>',
+                  starOn : '<%= asset_path('star-on.png') %>',
+                  starHalf: '<%= asset_path('star-half.png') %>',
+                  half: true,
+                  readOnly: true,
+                  score: <%= @book.evaluation %>
+                });
+              </script>
+
+              <% if @book.user == current_user %>
+                <td>
+                  <%= link_to "Edit", edit_book_path(@book), class:"btn btn-success btn-sm" %>
+                </td>
+                <td>
+                  <%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
+                </td>
+              <% end %>
             </tr>
           </tbody>
         </table>
