@@ -15,7 +15,7 @@
         </tr>
         <% @groups.each do |group| %>
           <tr>
-            <td><%= attachment_image_tag group, :image, :fill, 50, 50, fallback: "no_image.jpg", size: "50x50" %></td>
+            <td><%= attachment_image_tag group, :image, :fill, 50, 50, fallback: "no-image-icon.jpg" %></td>
             <td>
               <%= link_to group_path(group) do %>
                 <%= group.name %>

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :messages, only: [:create]
 
   resources :groups, only: [:new, :create, :edit, :update, :index, :show] do
+    resources :event_messages, only: [:new, :create, :index]
     resource :group_users, only: [:create, :destroy]
   end
 

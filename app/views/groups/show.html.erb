@@ -14,7 +14,7 @@
          <th></th>
         </tr>
         <tr>
-          <td><%= attachment_image_tag @group, :image, :fill, 50, 50, fallback: "no_image.jpg", size: "50x50" %></td>
+          <td><%= attachment_image_tag @group, :image, :fill, 50, 50, fallback: "no-image-icon.jpg" %></td>
           <td>
             <%= @group.name %>
           </td>
@@ -26,9 +26,11 @@
           </td>
           <% if current_user.id == @group.owner_id %>
             <td><%= link_to "Edit", edit_group_path(@group.id), class:"btn btn-success" %></td>
+            <td><%= link_to "Notice an Event", new_group_event_message_path(@group), class:"btn btn-primary" %></td>
           <% else %>
             <% if @group.group_users?(current_user) %>
               <td><%= link_to "Leave this group", group_group_users_path(@group), method: :delete, class:"btn btn-danger" %></td>
+              <td><%= link_to "information", group_event_messages_path, class:"btn btn-primary" %></td>
             <% else %>
               <td><%= link_to "Join this group", group_group_users_path(@group), method: :post, class:"btn btn-success" %></td>
             <% end %>
