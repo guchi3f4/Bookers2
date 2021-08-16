@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="mx-auto">
+      <% if flash[:event_message] %>
+      　<h2><%= flash[:event_message] %></h2>
+      　<p>内容は以下の通りです</p>
+    　<% end %>
+
+      <% @event_messages.each do |event_message| %>
+        <div>
+          [タイトル]<br>
+          <%= event_message.title %>
+        </div>
+        <div class="mt-3">
+          [本文]<br>
+          <%= event_message.content %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

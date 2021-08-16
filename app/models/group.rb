@@ -1,6 +1,6 @@
 class Group < ApplicationRecord
     has_many :group_users, dependent: :destroy
-    has_one :event_message
+    has_many :event_messages, dependent: :destroy
     attachment :image
 
     validates:name,

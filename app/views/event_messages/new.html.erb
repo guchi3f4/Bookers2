@@ -1,11 +1,11 @@
-<div class ="container">
+<div class="container">
   <div class="row">
-    <div class="mx-auto">
+    <div class="mx-auto col-5">
       <h2>Event Mail</h2>
 
-      <% render "post_comments/error", obj:@event_message %>
+      <%= render "post_comments/error", obj:@event_message %>
 
-      <%= form_with model: @event_message, local:true do |f| %>
+      <%= form_with model: [@group, @event_message], local:true do |f| %>
         <div class="form-group">
           <%= f.label :title %><br>
           <%= f.text_field :title, class:"form-control" %>
