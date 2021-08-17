@@ -23,7 +23,11 @@
                 <% end %>
               </td>
               <td><%= @book.body %></td>
-
+              <td>
+                <%= link_to books_path(category: @book.category) do %>
+                  <%= @book.category %>
+                <% end %>
+              </td>
               <td class="favorite-btn<%= @book.id %>">
                 <%= render "favorites/favorite", book:@book %>
               </td>
@@ -32,17 +36,18 @@
                 コメントの数: <%= @book.post_comments.count %>
               </td>
 
-              <td id="star-evaluation-<%= @book.id %>"></td>
+              <td id="star_evaluation_<%= @book.id %>"></td>
 　　　　　　　<script>
-                $('#star-evaluation-<%= @book.id %>').raty({
-                  size     : 36,
-                  starOff:  '<%= asset_path('star-off.png') %>',
-                  starOn : '<%= asset_path('star-on.png') %>',
-                  starHalf: '<%= asset_path('star-half.png') %>',
-                  half: true,
-                  readOnly: true,
-                  score: <%= @book.evaluation %>
-                });
+　　　　　　　$('#star_evaluation_<%= @book.id %>').empty();
+              $('#star_evaluation_<%= @book.id %>').raty({
+                size     : 36,
+                starOff:  '<%= asset_path('star-off.png') %>',
+                starOn : '<%= asset_path('star-on.png') %>',
+                starHalf: '<%= asset_path('star-half.png') %>',
+                half: true,
+                readOnly: true,
+                score: <%= @book.evaluation %>
+              });
               </script>
 
               <% if @book.user == current_user %>

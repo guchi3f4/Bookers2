@@ -30,10 +30,22 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.all.sort{|a,b|
-      b.favorites.where(created_at: set_week).size <=>
-      a.favorites.where(created_at: set_week).size
-    }
+    
+    if params[:sort] == "evaluation_desc"
+      @books = Book.order(evaluation: :DESC)
+    elsif params[:sort] == "favorite_desc"
+      @books = Book.all.sort{|a,b|
+        b.favorites.where(created_at: set_week).size <=>
+        a.favorites.where(created_at: set_week).size
+      }
+    elsif params[:category]
+      @books = Book.where(category: params[:category]).order(title: :ASC)
+    elsif  params[:content]
+      content = params[:content]
+      @books = Book.where("title LIKE ? OR category LIKE ?", "%#{content}%","%#{content}%")
+    else
+      @books = Book.order(id: :DESC)
+    end
   end
 
   def show
@@ -67,7 +79,7 @@ class BooksController < ApplicationController
   private
 
   def params_book
-    params.require(:book).permit(:title, :body, :evaluation)
+    params.require(:book).permit(:title, :body, :evaluation, :category)
   end
 
   def set_week
