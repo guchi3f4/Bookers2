@@ -30,7 +30,7 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    
+
     if params[:sort] == "evaluation_desc"
       @books = Book.order(evaluation: :DESC)
     elsif params[:sort] == "favorite_desc"
@@ -50,7 +50,11 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @book.book_count += 1
+    @book.save
     @post_comment = PostComment.new
+
+
 
     @userEntry = Entry.where(user_id: @book.user.id)
     @currentUserEntry = Entry.where(user_id: current_user.id)
