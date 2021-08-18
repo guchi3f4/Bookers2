@@ -36,8 +36,8 @@ class User < ApplicationRecord
   end
 
   def ratio(after,before)
-    if after == 0 || before == 0
-      "0%"
+    if before == 0
+      "前日(前週)の投稿が0のため計算できません"
     else
     (after / before.to_f * 100).round.to_s + "%"
     end

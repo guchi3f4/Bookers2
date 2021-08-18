@@ -11,7 +11,7 @@
             <th></th>
             <th>Title</th>
             <th>Opinion</th>
-            <th></th>
+            <th colspan="4"></th>
           </tr>
         </thead>
         <% @books.each do |book| %>
@@ -28,9 +28,28 @@
               <% end %>
               </td>
             <td><%= book.body %></td>
+            <td class="favorite-btn<%= book.id %>">
+              <%= render "favorites/favorite", book:book %>
+            </td>
             <td>
               コメント数: <%= book.post_comments.count %>
             </td>
+            <td>閲覧数: <%= book.book_count %></td>
+
+            <td id="star_evaluation_<%= book.id %>"></td>
+　　　　　　<script>
+　　　　　　$('#star_evaluation_<%= book.id %>').empty();
+            $('#star_evaluation_<%= book.id %>').raty({
+              size     : 36,
+              starOff:  '<%= asset_path('star-off.png') %>',
+              starOn : '<%= asset_path('star-on.png') %>',
+              starHalf: '<%= asset_path('star-half.png') %>',
+              half: true,
+              readOnly: true,
+              score: <%= book.evaluation %>
+            });
+　　　　　　</script>
+
           </tr>
         </tbody>
         <% end %>
@@ -102,17 +121,20 @@
         <% end %>
       </div>
 
-      <script>
-        $(document).ready(function() {
-          $('#button1').on("click",function(){
-            $('.books_count').removeClass('d-none');
-          });
-        });
-      </script>
+      <!--<script>-->
+      <!--  $(document).ready(function() {-->
+      <!--    $('#button1').on("click",function(){-->
+      <!--      $('.books_count').removeClass('d-none');-->
+      <!--    });-->
+      <!--  });-->
+      <!--</script>-->
 
-      <div class="books_count d-none">
-        <%= render "books_count", books_count: @books_count %>
+      <div class="books_count">
+        <% if @books_count.present? %>
+          <%= render "books_count", books_count: @books_count %>
+        <% end %>
       </div>
+
     </div>
   </div>
 </div>

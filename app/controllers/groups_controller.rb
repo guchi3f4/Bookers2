@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
     if @group.save
       @group_user = GroupUser.create(group_id: @group.id, user_id: current_user.id)
-      redirect_to request.referer
+      redirect_to groups_path
     else
       render :new
     end

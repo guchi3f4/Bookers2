@@ -30,28 +30,42 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-
-    if params[:sort] == "evaluation_desc"
-      @books = Book.order(evaluation: :DESC)
-    elsif params[:sort] == "favorite_desc"
+    if params[:sort] == "favorite_desc"
       @books = Book.all.sort{|a,b|
         b.favorites.where(created_at: set_week).size <=>
         a.favorites.where(created_at: set_week).size
       }
     elsif params[:category]
-      @books = Book.where(category: params[:category]).order(title: :ASC)
+      @books = Book.where(category: params[:category])
     elsif  params[:content]
       content = params[:content]
       @books = Book.where("title LIKE ? OR category LIKE ?", "%#{content}%","%#{content}%")
     else
-      @books = Book.order(id: :DESC)
+       @books = Book.all.order(params[:sort])
     end
+    # if params[:sort] == "evaluation_desc"
+    #   @books = Book.order(evaluation: :DESC)
+    # elsif params[:sort] == "favorite_desc"
+    #   @books = Book.all.sort{|a,b|
+    #     b.favorites.where(created_at: set_week).size <=>
+    #     a.favorites.where(created_at: set_week).size
+    #   }
+    # elsif params[:category]
+    #   @books = Book.where(category: params[:category]).order(title: :ASC)
+    # elsif  params[:content]
+    #   content = params[:content]
+    #   @books = Book.where("title LIKE ? OR category LIKE ?", "%#{content}%","%#{content}%")
+    # else
+    #   @books = Book.order(id: :DESC)
+    # end
   end
 
   def show
     @book = Book.find(params[:id])
-    @book.book_count += 1
-    @book.save
+    unless @book.user_id == current_user.id
+      @book.book_count += 1
+      @book.save
+    end
     @post_comment = PostComment.new
 
 
@@ -87,6 +101,6 @@ class BooksController < ApplicationController
   end
 
   def set_week
-    Time.current.ago(7.days)..Time.current
+    Time.current.ago(6.days)..Time.current
   end
 end
