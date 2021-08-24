@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  before_action :ensure_correct_user, only: [:edit, :update, :destroy]
+
   def create
     @book = Book.new(params_book)
     @book.user = current_user
@@ -12,14 +14,9 @@ class BooksController < ApplicationController
   end
 
   def edit
-    @book = Book.find(params[:id])
-    if @book.user != current_user
-      redirect_to books_path
-    end
   end
 
   def update
-    @book = Book.find(params[:id])
     if @book.update(params_book)
       redirect_to book_path(@book)
       flash[:notice] = "You have updated book successfully."
@@ -62,35 +59,26 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @user = @book.user
     unless @book.user_id == current_user.id
       @book.book_count += 1
       @book.save
     end
     @post_comment = PostComment.new
 
-
-
-    @userEntry = Entry.where(user_id: @book.user.id)
-    @currentUserEntry = Entry.where(user_id: current_user.id)
-    unless @book.user.id == current_user.id
-      @currentUserEntry.each do |cu|
-        @userEntry.each do |us|
-          if cu.room_id == us.room_id then
-            @isRoom = true
-            @roomId = cu.room_id
-          end
-        end
+    unless @user == current_user
+      other_user_rooms = @user.entries.pluck(:room_id)
+      @entry = Entry.find_by(user_id: current_user, room_id: other_user_rooms)
+      if @entry.present?
+        @room = @entry.room
+      else
+        @new_room = Room.new
       end
-    end
-    unless @isRoom
-      @room = Room.new
-      @entry = Entry.new
     end
   end
 
   def destroy
-    book = Book.find(params[:id])
-    book.destroy
+    @book.destroy
     redirect_to books_path
   end
 
@@ -98,6 +86,13 @@ class BooksController < ApplicationController
 
   def params_book
     params.require(:book).permit(:title, :body, :evaluation, :category)
+  end
+
+  def ensure_correct_user
+    @book = Book.find(params[:id])
+    unless @book.user == current_user
+      redirect_to books_path
+    end
   end
 
   def set_week

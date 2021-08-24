@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
 
   before_action :authenticate_user!,except: [:top, :about]
+  before_action :ensure_correct_user, only: [:edit]
 
   def after_sign_in_path_for(resource)
     user_path(current_user)

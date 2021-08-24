@@ -1,16 +1,15 @@
 class UsersController < ApplicationController
+  before_action :ensure_correct_user, only: [:edit,:update]
+
   def edit
-    @user = User.find(params[:id])
     if @user != current_user
       redirect_to user_path(current_user)
     end
   end
 
   def update
-    @user = User.find(params[:id])
     if @user.update(params_user)
-      redirect_to user_path(@user)
-      flash[:notice] = "You have updated user successfully."
+      redirect_to user_path(@user), notice: "You have updated user successfully."
     else
       render :edit
     end
@@ -23,27 +22,22 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @books = @user.books
+    @i = 6
 
     @today_book = @books.where(created_at: Time.zone.now.all_day).count
     @yesterday_book = @books.where(created_at: 1.day.ago.all_day).count
     @this_week = @books.where(created_at: Date.today.ago(6.days)..Time.current).count
     @last_week = @books.where(created_at: Date.today.ago(13.days)..Date.today.ago(6.days)).count
 
-    @userEntry = Entry.where(user_id: @user.id)
-    @currentUserEntry = Entry.where(user_id: current_user.id)
-    unless @user.id == current_user.id
-      @currentUserEntry.each do |cu|
-        @userEntry.each do |us|
-          if cu.room_id == us.room_id then
-            @isRoom = true
-            @roomId = cu.room_id
-          end
-        end
+    unless @user == current_user
+      other_user_rooms = @user.entries.pluck(:room_id)
+      @entry = Entry.find_by(user_id: current_user, room_id: other_user_rooms)
+      if @entry.present?
+        @room = @entry.room
+      else
+        @new_room = Room.new
+        @new_entry = Entry.new
       end
-    end
-    unless @isRoom
-      @room = Room.new
-      @entry = Entry.new
     end
   end
 
@@ -70,5 +64,11 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :profile_image, :introduction)
   end
 
+  def ensure_correct_user
+    @user = User.find(params[:id])
+    unless @user == current_user
+      redirect_to user_path(current_user)
+    end
+  end
 
 end
