@@ -27,6 +27,7 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
+    #ソート機能
     if params[:sort] == "favorite_desc"
       @books = Book.all.sort{|a,b|
         b.favorites.where(created_at: set_week).size <=>
@@ -34,27 +35,14 @@ class BooksController < ApplicationController
       }
     elsif params[:category]
       @books = Book.where(category: params[:category])
-    elsif  params[:content]
+    elsif params[:content]
       content = params[:content]
       @books = Book.where("title LIKE ? OR category LIKE ?", "%#{content}%","%#{content}%")
+    elsif params[:sort].present?
+      @books = Book.all.order(params[:sort])
     else
-       @books = Book.all.order(params[:sort])
+      @books = Book.all.order(id: 'DESC')
     end
-    # if params[:sort] == "evaluation_desc"
-    #   @books = Book.order(evaluation: :DESC)
-    # elsif params[:sort] == "favorite_desc"
-    #   @books = Book.all.sort{|a,b|
-    #     b.favorites.where(created_at: set_week).size <=>
-    #     a.favorites.where(created_at: set_week).size
-    #   }
-    # elsif params[:category]
-    #   @books = Book.where(category: params[:category]).order(title: :ASC)
-    # elsif  params[:content]
-    #   content = params[:content]
-    #   @books = Book.where("title LIKE ? OR category LIKE ?", "%#{content}%","%#{content}%")
-    # else
-    #   @books = Book.order(id: :DESC)
-    # end
   end
 
   def show

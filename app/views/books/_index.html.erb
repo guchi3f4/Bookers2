@@ -1,37 +1,34 @@
-<%= link_to "新しい順", books_path(sort: 'created_at DESC') %>
-      |
-      <%= link_to "評価が高い順", books_path(sort: "evaluation DESC") %>
-      |
-      <%= link_to "いいね順(1週間)", books_path(sort: :favorite_desc) %>
-      <table class="table table-hover">
-        <thead>
+      <table class="table mb-0">
+        <tr>
+          <th class='col-2'></th>
+          <th class='col-3'>Title</th>
+          <th class='col-4'>Opinion</th>
+          <th class='col-3'>Category</th>
+        </tr>
+      </table>
+      <% books.each do |book|%>
+        <table class="table border">
           <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Opinion</th>
-            <th>Category</th>
-            <th colspan="4"></th>
-          </tr>
-        </thead>
-        <% books.each do |book| %>
-        <tbody>
-          <tr>
-            <td>
+            <td class="col-2 py-2 align-middle">
               <%= link_to user_path(book.user) do %>
-                <%= attachment_image_tag book.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg" %>
+                <%= attachment_image_tag book.user, :profile_image, :fill, 60, 60, fallback: "no-image-icon.jpg" %>
               <% end %>
             </td>
-            <td>
+            <td class="col-3 align-middle text-break ">
               <%= link_to book_path(book) do %>
                 <%= book.title %>
               <% end %>
             </td>
-            <td><%= book.body %></td>
-            <td>
+            <td class="col-4 text-break">
+              <%= book.body.truncate(57, omission: '...') %>
+            </td>
+            <td class="col-3 align-middle">
               <%= link_to books_path(category: book.category) do %>
                 <%= book.category %>
               <% end %>
             </td>
+          </tr>
+          <tr>
             <td class="favorite-btn<%= book.id %>">
               <%= render "favorites/favorite", book:book %>
             </td>
@@ -40,21 +37,21 @@
             </td>
             <td>閲覧数: <%= book.book_count %></td>
 
-            <td id="star_evaluation_<%= book.id %>"></td>
-　　　　　　<script>
-　　　　　　$('#star_evaluation_<%= book.id %>').empty();
-            $('#star_evaluation_<%= book.id %>').raty({
-              size     : 36,
-              starOff:  '<%= asset_path('star-off.png') %>',
-              starOn : '<%= asset_path('star-on.png') %>',
-              starHalf: '<%= asset_path('star-half.png') %>',
-              half: true,
-              readOnly: true,
-              score: <%= book.evaluation %>
-            });
-　　　　　　</script>
-
+            <td class="pl-0">
+              <div id="star_evaluation_<%= book.id %>"></div>
+              <script>
+              $('#star_evaluation_<%= book.id %>').empty();
+              $('#star_evaluation_<%= book.id %>').raty({
+                size: 20,
+                starOff:  '<%= asset_path('star-off.png') %>',
+                starOn : '<%= asset_path('star-on.png') %>',
+                starHalf: '<%= asset_path('star-half.png') %>',
+                half: true,
+                readOnly: true,
+                score: <%= book.evaluation %>,
+              });
+              </script>
+    				</td>
           </tr>
-        </tbody>
-        <% end %>
-      </table>
+        </table>
+      <% end %>

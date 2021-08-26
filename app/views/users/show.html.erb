@@ -7,42 +7,59 @@
       <h2>Books</h2>
       <%= render 'books/index', books: @books %>
 
-      <h3>投稿数の前日比・前週比</h3>
-      <table class="table table-bordered">
-        <tr>
-          <th>今日の投稿数</th>
-          <th>前日の投稿数</th>
-          <th>前日比</th>
-        </tr>
-        <tr>
-          <td><%= @today_book %></td>
-          <td><%= @yesterday_book %></td>
-          <td><%= @user.ratio(@today_book,@yesterday_book) %></td>
-        </tr>
-      </table>
-      <table class="table table-bordered">
-        <tr>
-          <th>今週の投稿数</th>
-          <th>前週の投稿数</th>
-          <th>前週比</th>
-        </tr>
-        <tr>
-          <td><%= @this_week %></td>
-          <td><%= @last_week %></td>
-          <td><%= @user.ratio(@this_week,@last_week) %></td>
-        </tr>
-      </table>
-      <table class="table table-bordered">
-        <tr>
-          <th>6日前</th><th>5日前</th><th>4日前</th><th>3日前</th><th>2日前</th><th>1日前</th><th>今日</th>
-        </tr>
-        <tr>
-          <% 6.downto(0) do |i| %>
-            <td><%= @user.week_date(i) %></td>
-          <% end %>
-        </tr>
-      </table>
+      <div class="d-flex justify-content-center">
+        <h3 class>投稿数の前日比・前週比</h3>
+        <div id="post_book_arrow" class="btn text-success">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
 
+      <script>
+        $(function() {
+          $('#post_book_arrow').on("click",function(){
+            $('#post_book_count').slideToggle();
+          });
+        });
+      </script>
+
+      <div id="post_book_count">
+        <table class="table table-bordered">
+          <tr>
+            <th>今日の投稿数</th>
+            <th>前日の投稿数</th>
+            <th>前日比</th>
+          </tr>
+          <tr>
+            <td><%= @today_book %></td>
+            <td><%= @yesterday_book %></td>
+            <td><%= @user.ratio(@today_book,@yesterday_book) %></td>
+          </tr>
+        </table>
+        <table class="table table-bordered">
+          <tr>
+            <th>今週の投稿数</th>
+            <th>前週の投稿数</th>
+            <th>前週比</th>
+          </tr>
+          <tr>
+            <td><%= @this_week %></td>
+            <td><%= @last_week %></td>
+            <td><%= @user.ratio(@this_week,@last_week) %></td>
+          </tr>
+        </table>
+        <table class="table table-bordered">
+          <tr>
+            <th>6日前</th><th>5日前</th><th>4日前</th><th>3日前</th><th>2日前</th><th>1日前</th><th>今日</th>
+          </tr>
+          <tr>
+            <% 6.downto(0) do |i| %>
+              <td><%= @user.week_date(i) %></td>
+            <% end %>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="text-center mt-3">- Weekly Chart -</h3>
       <canvas id="myChart"></canvas>
       <script>
       var ctx = document.getElementById("myChart");

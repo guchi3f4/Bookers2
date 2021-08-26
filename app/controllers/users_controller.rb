@@ -21,8 +21,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @books = @user.books
-    @i = 6
+    @books = @user.books.order(id: "DESC")
 
     @today_book = @books.where(created_at: Time.zone.now.all_day).count
     @yesterday_book = @books.where(created_at: 1.day.ago.all_day).count
