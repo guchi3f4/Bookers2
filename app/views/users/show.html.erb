@@ -86,14 +86,6 @@
         <% end %>
       </div>
 
-      <!--<script>-->
-      <!--  $(document).ready(function() {-->
-      <!--    $('#button1').on("click",function(){-->
-      <!--      $('.books_count').removeClass('d-none');-->
-      <!--    });-->
-      <!--  });-->
-      <!--</script>-->
-
       <div class="books_count">
         <% if @books_count.present? %>
           <%= render "books_count", books_count: @books_count %>

@@ -1,57 +1,58 @@
-      <table class="table mb-0">
-        <tr>
-          <th class='col-2'></th>
-          <th class='col-3'>Title</th>
-          <th class='col-4'>Opinion</th>
-          <th class='col-3'>Category</th>
-        </tr>
-      </table>
-      <% books.each do |book|%>
-        <table class="table border">
-          <tr>
-            <td class="col-2 py-2 align-middle">
-              <%= link_to user_path(book.user) do %>
-                <%= attachment_image_tag book.user, :profile_image, :fill, 60, 60, fallback: "no-image-icon.jpg" %>
-              <% end %>
-            </td>
-            <td class="col-3 align-middle text-break ">
-              <%= link_to book_path(book) do %>
-                <%= book.title %>
-              <% end %>
-            </td>
-            <td class="col-4 text-break">
-              <%= book.body.truncate(57, omission: '...') %>
-            </td>
-            <td class="col-3 align-middle">
-              <%= link_to books_path(category: book.category) do %>
-                <%= book.category %>
-              <% end %>
-            </td>
-          </tr>
-          <tr>
-            <td class="favorite-btn<%= book.id %>">
-              <%= render "favorites/favorite", book:book %>
-            </td>
-            <td>
-              コメント数: <%= book.post_comments.count %>
-            </td>
-            <td>閲覧数: <%= book.book_count %></td>
+<table class="table mb-0 book-table">
+<tr>
+  <th class='col-2'></th>
+  <th class='col-2'>Title</th>
+  <th class='col-2'>Category</th>
+  <th class='col-6'>Opinion</th>
+</tr>
+</table>
+<% books.each do |book|%>
+  <div class="container mb-3 py-3 rounded book-item">
+    <div class="row border-bottom pb-2 align-items-center">
+      <div class="col-md-2 col-4">
+        <%= link_to user_path(book.user) do %>
+          <%= attachment_image_tag book.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg" %>
+        <% end %>
+      </div>
+      <div class="col-md-2 col-6 text-break">
+        <%= link_to book_path(book) do %>
+          <%= book.title %>
+        <% end %>
+      </div>
+      <div class="col-md-2">
+        <span class="d-inline-block d-md-none my-2 mr-1">category: </span>
+        <%= link_to books_path(category: book.category) do %>
+          <%= book.category %>
+        <% end %>
+      </div>
+      <div class="col-md-6 text-break">
+        <%= book.body.truncate(71, omission: '...') %>
+      </div>
+    </div>
+    <div class="row py-2">
+      <div class="col-md-2 favorite-btn<%= book.id %>">
+        <%= render "favorites/favorite", book:book %>
+      </div>
 
-            <td class="pl-0">
-              <div id="star_evaluation_<%= book.id %>"></div>
-              <script>
-              $('#star_evaluation_<%= book.id %>').empty();
-              $('#star_evaluation_<%= book.id %>').raty({
-                size: 20,
-                starOff:  '<%= asset_path('star-off.png') %>',
-                starOn : '<%= asset_path('star-on.png') %>',
-                starHalf: '<%= asset_path('star-half.png') %>',
-                half: true,
-                readOnly: true,
-                score: <%= book.evaluation %>,
-              });
-              </script>
-    				</td>
-          </tr>
-        </table>
-      <% end %>
+      <div class="col-md-3">
+        コメントの数: <%= book.post_comments.count %>
+      </div>
+      <div class="col-md-3">閲覧数: <%= book.book_count %></div>
+
+      <div class="col-md-4" id="star_evaluation_<%= book.id %>">
+        <script>
+        $('#star_evaluatio_<%= book.id %>').empty();
+        $('#star_evaluation_<%= book.id %>').raty({
+          size     : 36,
+          starOff:  '<%= asset_path('star-off.png') %>',
+          starOn : '<%= asset_path('star-on.png') %>',
+          starHalf: '<%= asset_path('star-half.png') %>',
+          half: true,
+          readOnly: true,
+          score: <%= book.evaluation %>
+        });
+        </script>
+      </div>
+    </div>
+  </div>
+<% end %>

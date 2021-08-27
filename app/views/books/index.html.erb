@@ -18,11 +18,13 @@
     </div>
     <div class="col-md-8 offset-md-1">
       <h2>Books</h2>
-      <%= link_to "新しい順", books_path(sort: 'created_at DESC') %>
-      |
-      <%= link_to "評価が高い順", books_path(sort: "evaluation DESC") %>
-      |
-      <%= link_to "いいね順(1週間)", books_path(sort: :favorite_desc) %>
+      <div class="sort-bar">
+        <%= link_to "新しい順", books_path(sort: 'created_at DESC') %>
+        |
+        <%= link_to "評価が高い順", books_path(sort: "evaluation DESC") %>
+        |
+        <%= link_to "いいね順(1週間)", books_path(sort: :favorite_desc) %>
+      </div>
       <%= render 'books/index', books: @books %>
     </div>
   </div>

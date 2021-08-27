@@ -4,42 +4,51 @@
       <%= render "layouts/side", user:@book.user, book:Book.new %>
     </div>
     <div class="col-md-8 offset-md-1">
-      <h2>Book detail</h2>
-      <div>
-        <table class="table">
-          <tbody>
-            <tr>
-              <td>
-                <%= link_to user_path(@book.user) do %>
-                  <%= attachment_image_tag @book.user, :profile_image, :fill, 100, 100, fallback: "no-image-icon.jpg" %>
-                <% end %><br>
-                <%= link_to user_path(@book.user) do %>
-                  <%= @book.user.name %>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to book_path(@book) do %>
-                  <%= @book.title %>
-                <% end %>
-              </td>
-              <td><%= @book.body %></td>
-              <td>
-                <%= link_to books_path(category: @book.category) do %>
-                  <%= @book.category %>
-                <% end %>
-              </td>
-              <td class="favorite-btn<%= @book.id %>">
-                <%= render "favorites/favorite", book:@book %>
-              </td>
+      <div class="row">
+        <h2 class="col-7">Book detail</h2>
+        <% if @book.user == current_user %>
+          <div class="col-5 text-right">
+            <%= link_to "Edit", edit_book_path(@book), class:"btn btn-success btn-sm mr-2" %>
+            <%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
+          </div>
+        <% end %>
+      </div>
 
-              <td>
-                コメントの数: <%= @book.post_comments.count %>
-              </td>
-              <td>閲覧数: <%= @book.book_count %></td>
+      <div class="container border">
+        <div class="row py-2 border-bottom">
+          <div class="col-md-2">
+            <%= link_to user_path(@book.user) do %>
+              <%= attachment_image_tag @book.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg" %>
+            <% end %><br>
+            <%= link_to user_path(@book.user) do %>
+              <%= @book.user.name %>
+            <% end %>
+          </div>
+          <div class="col-md-2">
+              <%= @book.title %>
+          </div>
+          <div class="col-md-2">
+            <%= link_to books_path(category: @book.category) do %>
+              <%= @book.category %>
+            <% end %>
+          </div>
+          <div class="col-md-6 text-break">
+            <%= @book.body %>
+          </div>
+        </div>
+        <div class="row py-2">
+          <div class="col-md-2 favorite-btn<%= @book.id %>">
+            <%= render "favorites/favorite", book:@book %>
+          </div>
 
-              <td id="star_evaluation_<%= @book.id %>"></td>
-　　　　　　　<script>
-　　　　　　　$('#star_evaluation_<%= @book.id %>').empty();
+          <div class="col-md">
+            コメントの数: <%= @book.post_comments.count %>
+          </div>
+          <div class="col-md">閲覧数: <%= @book.book_count %></div>
+
+          <div class="col-md-4" id="star_evaluation_<%= @book.id %>">
+            <script>
+              $('#star_evaluation_<%= @book.id %>').empty();
               $('#star_evaluation_<%= @book.id %>').raty({
                 size     : 36,
                 starOff:  '<%= asset_path('star-off.png') %>',
@@ -49,32 +58,21 @@
                 readOnly: true,
                 score: <%= @book.evaluation %>
               });
-              </script>
-
-              <% if @book.user == current_user %>
-                <td>
-                  <%= link_to "Edit", edit_book_path(@book), class:"btn btn-success btn-sm" %>
-                </td>
-                <td>
-                  <%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %>
-                </td>
-              <% end %>
-            </tr>
-          </tbody>
-        </table>
-
-          <div class="comments_area">
-            <%= render "post_comments/comment", book:@book %>
+            </script>
           </div>
+        </div>
+      </div>
 
-          <div class="error">
-            <%= render "post_comments/error", obj:@post_comment %>
-          </div>
+      <div class="comments_area mt-3">
+        <%= render "post_comments/comment", book:@book %>
+      </div>
 
-          <div class="form">
-            <%= render "post_comments/form", book:@book, post_comment:@post_comment %>
-          </div>
+      <div class="error">
+        <%= render "post_comments/error", obj:@post_comment %>
+      </div>
 
+      <div class="form">
+        <%= render "post_comments/form", book:@book, post_comment:@post_comment %>
       </div>
     </div>
   </div>
