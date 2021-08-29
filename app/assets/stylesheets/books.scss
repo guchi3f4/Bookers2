@@ -2,18 +2,19 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$breakpoints: (
-  'sm': 'screen and (max-width: 400px)',
-  'md': 'screen and (max-width: 768px)',
-  'lg': 'screen and (max-width: 1000px)',
-  'xl': 'screen and (max-width: 1200px)',
-) !default;
+// $breakpoints: (
+//   'sm': 'screen and (max-width: 400px)',
+//   'md': 'screen and (max-width: 768px)',
+//   'lg': 'screen and (max-width: 1000px)',
+//   'xl': 'screen and (max-width: 1200px)',
+// ) !default;
 
-@mixin mq($breakpoint: md) {
-  @media #{map-get($breakpoints, $breakpoint)} {
-    @content;
-  }
-}
+// @mixin mq($breakpoint: md) {
+//   @media #{map-get($breakpoints, $breakpoint)} {
+//     @content;
+//   }
+// }
+@import './variables';
 
 .sort-bar {
   @include mq(md) {
